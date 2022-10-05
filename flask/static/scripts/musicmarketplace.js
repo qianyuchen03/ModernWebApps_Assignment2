@@ -3,7 +3,7 @@
 (function get_signups() {
    setTimeout(() => {
 
-        url = "/signups";
+        url = "/signups_in_memory";
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true); // async=true -> asynchronous
@@ -94,12 +94,15 @@
       }
 
       function learn_music() {
-        url = "/lessons?instrument=guitar";
+        url = "/lessons_with_delay?instrument=guitar";
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true); // async=true -> asynchronous
+        xhr.addEventListener("readystatechange", search_results_handler);
+        xhr.send();
+      }
 
-        xhr.onreadystatechange = function () {
+      function search_results_handler() {
         if (this.readyState == 4 && this.status == 200) {
             fieldData = JSON.parse(this.responseText);
             console.log(fieldData);
@@ -122,12 +125,7 @@
               timings = lesson_details["timings"];
               foundItemList.innerHTML = instrument + " " + demo_url + " " + days + " " + timings;
             }
-
           }
-        }
-
-        xhr.send();
-
       }
 
       function learn_music_local_var() {
